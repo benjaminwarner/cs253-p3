@@ -7,6 +7,8 @@
 
 int replace = 0;
 int delete = 0;
+int starting_line;
+int ending_line;
 
 void usage() {
 	fprintf(stderr, "usage: sed253 [-s pattern string] [-d line1 line2]\n");
@@ -19,9 +21,11 @@ void parse_args(int argc, char *argv[]) {
 	if (argc == 4) {
 		if (strcmp(argv[1], "-s") == 0)
 			replace = 1;
-		else if (strcmp(argv[1], "-d") == 0)
+		else if (strcmp(argv[1], "-d") == 0) {
 			delete = 1;
-		else {
+			starting_line = atoi(argv[2]);
+			ending_line = atoi(argv[3]);
+		} else {
 			usage();
 		}
 	}
@@ -32,7 +36,13 @@ void replace_occurrences() {
 }
 
 void delete_lines() {
-	printf("this will delete stuff eventually\n");
+	char buffer[1024];
+	int i = 1;
+	while (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+		if (i > ending_line || i < starting_line)
+			printf("%s", buffer);
+		i++;
+	}
 }
 
 void copy() {
