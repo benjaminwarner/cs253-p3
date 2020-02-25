@@ -1,7 +1,6 @@
 #include "copy.h"
 #include "delete.h"
 #include "substitute.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -35,28 +34,12 @@ void replace_occurrences() {
 	printf("this would replace stuff eventually\n");
 }
 
-void delete_lines() {
-	char buffer[1024];
-	int i = 1;
-	while (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-		if (i > ending_line || i < starting_line)
-			printf("%s", buffer);
-		i++;
-	}
-}
-
-void copy() {
-	char buffer[1024];
-	while (fgets(buffer, sizeof(buffer), stdin) != NULL)
-		printf("%s", buffer);
-}
-
 int main(int argc, char *argv[]) {
 	parse_args(argc, argv);
 	if (replace)
 		replace_occurrences();
 	else if (delete)
-		delete_lines();
+		delete_lines(starting_line, ending_line);
 	else
 		copy();
 	return 0;
