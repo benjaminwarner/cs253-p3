@@ -26,7 +26,6 @@ char *str_replace(char *str, char *pattern, char *replacement) {
 	char *tmp;
 	int len_pattern = strlen(pattern);
 	int len_replacement; 
-	int len_front;
 
 	if (len_pattern == 0)
 		return NULL;
@@ -35,15 +34,18 @@ char *str_replace(char *str, char *pattern, char *replacement) {
 	len_replacement = strlen(replacement);
 
 	insertion = str;
-	int i;
-	for (i = 0; (tmp = strstr(insertion, pattern)); i++)
+	int i = 0;
+	while ((tmp = strstr(insertion, pattern)) != NULL) {
+		i++;
 		insertion = tmp + len_pattern;
+	}
 	
-	tmp = result = malloc(strlen(str) + (len_replacement - len_pattern) * i + 1);
+	tmp = result = malloc(strlen(str) + (len_replacement - len_pattern) * 1 + 1);
 
 	if (!result)
 		return NULL;
-	
+
+	int len_front;
 	while (i--) {
 		insertion = strstr(str, pattern);
 		len_front = insertion - str;
